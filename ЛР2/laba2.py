@@ -1,7 +1,7 @@
 from sympy import *
 import pandas as pd
 import matplotlib.pyplot as plt
-
+te
 x, y = symbols('x y')
 
 # Создание датафрейма
@@ -13,7 +13,7 @@ def create_table(solve_x):
 
 
 # создание промежутка
-def create_range(x, step=5, k=5):
+def create_range(x, step=1, k=5):
     midd = int(round(x, 1) * 10)
     # create range
     if midd < 0:
@@ -41,12 +41,15 @@ if __name__ == '__main__':
 
     x, y = symbols('x y')
     z = eval(input().replace("import", "").replace("sys", "").replace("os", ""))
-
+    # z = (x**3-4*x)*sin(y**3+1)
     print(z, end="\n\n\n")
     print("Введите значения x и y c погрешностью в таком формате: x погрешность y погрешность"
           "\nНапример: -1.2 0.05\n0.15 0.01")
     x_num = tuple(float(x) for x in input().split(" "))
     y_num = tuple(float(x) for x in input().split(" "))
+
+    # x_num = (-1.2, 0.05)
+    # y_num = (0.15, 0.01)
     print(f"Вы ввели: x={x_num[0]}±{x_num[1]}, y={y_num[0]}±{y_num[1]}")
 
     # Вычисляем частные производные
@@ -85,7 +88,7 @@ if __name__ == '__main__':
         plt.figure()
         df = create_table(elem)
         print("\n\nКорень: ", elem)
-        print(df.transpose())
+        print(df.transpose().style.to_latex())
         # сохранение транспонированного графика в эксель
         df.transpose().to_csv("tabel"+str(i)+".csv")
 
@@ -93,14 +96,16 @@ if __name__ == '__main__':
         ax[0].plot(df['x'], df['abs(dz/dx)'])
         ax[0].set_xlabel('x', fontsize=15, loc="right", )
         ax[0].set_ylabel(r'|$\mathdefault{\frac{\partial z}{\partial x}}$|', fontsize=15, loc="top")
+        ax[0].set_title("а)")
 
         ax[1].plot(df['x'], df['delta_z, %'])
         ax[1].set_xlabel('x', fontsize=15, loc="right")
-        ax[1].set_ylabel('$\delta_z$, %', fontsize=15, loc="top")
+        ax[1].set_ylabel(r'$\delta_z$, %', fontsize=15, loc="top")
+        ax[1].set_title("б)")
 
         # задаем отступ между полотнами
-        fig.subplots_adjust(wspace=0.3)
-
+        # fig.subplots_adjust(wspace=0.3)
+        fig.tight_layout(pad=5.0)
         # сохраняем в полотно и указываем номер
         fig.savefig("Plot" + str(i) + ".png")
     # чтобы программа не закрывалась сразу
